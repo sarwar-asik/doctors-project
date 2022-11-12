@@ -5,12 +5,12 @@ const Navbar = () => {
 
     const MenuItem = <React.Fragment>
              
-              <li>   <Link to='/'>Home </Link> </li>
-              <li>   <Link to='/'>AppointMent</Link> </li>
-              <li>   <Link to='/'>Review</Link> </li>
-              <li>   <Link to='/login'>Log In</Link> </li>
-              <li>   <Link to='/'>About </Link> </li>
-              <li>   <Link to='/'>Contact Us </Link> </li>
+              <li className="  mx-1 rounded-lg  ">   <Link  to='/'>Home </Link> </li>
+              <li className="  mx-1 rounded-lg  ">   <Link to='/'>AppointMent</Link> </li>
+              <li className="  mx-1 rounded-lg  ">   <Link to='/'>Review</Link> </li>
+              <li className="  mx-1 rounded-lg  ">   <Link to='/login'>Log In</Link> </li>
+              <li className="  mx-1 rounded-lg  ">   <Link to='/'>About </Link> </li>
+              <li className="  mx-1 rounded-lg  ">   <Link to='/'>Contact Us </Link> </li>
               
     </React.Fragment>
   return (
