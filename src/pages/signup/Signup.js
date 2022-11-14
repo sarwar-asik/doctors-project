@@ -1,43 +1,79 @@
+import { getAuth, updateProfile } from "firebase/auth";
 import React, { useContext } from "react";
+
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { AuthContext } from "../../firebase/AuthProvider";
+import app from "../../firebase/Firebase.config";
 
-const LogIn = () => {
-  const { login,googleSignIn } = useContext(AuthContext);
+const Signup = () => {
+  const { createUser, googleSignIn } = useContext(AuthContext);
+
+  const auth = getAuth(app);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
-
   const [data, setData] = useState("");
-
   const [error, setError] = useState("");
 
-  const handleLogIn = (data) => {
-    console.log(data);
+  const handleSignUp = (data) => {
+    // console.log(data);
+
+    const name = data.name;
     const email = data.email;
     const password = data.password;
-    // console.log(errors,email,password);
 
-    login(email, password)
+    console.log(name, email, password);
+
+    console.log(errors);
+
+    createUser(email, password)
       .then((result) => {
-        toast("Log In Success");
-        setError("");
+        console.log(result.user);
+        updateProfile(auth.currentUser, {
+          displayName: name,
+          photoURL:
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmX-E07-hBehmElZgn8GjLQtKhojH_yYVxcY_Jqz0&s",
+        })
+          .then(() => {
+            toast("Sign Up");
+            setError("");
+          })
+          .catch((er) => {
+            setError(er.message);
+          });
       })
-      .catch((error) => {
-        setError(error.message);
+      .catch((e) => {
+        setError(e.message);
+        console.log(e);
       });
   };
   return (
     <div className="h-[800px] flex justify-center items-center">
       <div className="w-96 p-7">
-        <h2 className="text-2xl text-center font-medium"> Log In </h2>
-        <form onSubmit={handleSubmit(handleLogIn)}>
+        <h2 className="text-2xl text-center font-medium"> Sign Up </h2>
+        <form onSubmit={handleSubmit(handleSignUp)}>
+          <div className="form-control w-full max-w-xs">
+            <label className="label">
+              <span className="label-text font-medium">Your Name </span>
+            </label>
+            <input
+              {...register("name", { required: "Name is required" })}
+              aria-invalid={errors.name ? "true" : "false"}
+              type="text"
+              className="input input-bordered w-full max-w-xs"
+            />
+            {errors.name && (
+              <p className="text-red-500" role="alert">
+                {errors.name?.message}
+              </p>
+            )}
+          </div>
           {/* <Header /> */}
           <div className="form-control w-full max-w-xs">
             <label className="label">
@@ -81,23 +117,26 @@ const LogIn = () => {
               <span className="label-text-alt">Forget password ?</span>
             </label>
           </div>
-          <p className="text-xl text-red-500"> {error}</p>
+          <h6 className="text-red-500">{error}</h6>
           <input
             className="btn btn-accent w-full my-3"
-            value="Log In "
+            value="Sign Up  "
             type="submit"
           />
         </form>
         <p>
           {" "}
-          New to Doctor Portal ?{" "}
-          <Link to="/signup" className="text-primary">
+          Already have an Account ?{" "}
+          <Link to="/login" className="text-primary">
             {" "}
-            Create New Account
+            Please Log In
           </Link>
         </p>
         <div className="divider">OR</div>
-        <button onClick={googleSignIn} className="btn btn-outline w-full text-lg ">
+        <button
+          onClick={googleSignIn}
+          className="btn btn-outline w-full text-lg "
+        >
           {" "}
           Continue With Google
         </button>
@@ -106,4 +145,4 @@ const LogIn = () => {
   );
 };
 
-export default LogIn;
+export default Signup;

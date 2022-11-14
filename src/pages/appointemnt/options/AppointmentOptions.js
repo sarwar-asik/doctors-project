@@ -1,7 +1,7 @@
 import React from "react";
 import PrimaryBtn from "../../../components/primaryBtn/PrimaryBtn";
 
-const AppointmentOptions = ({ option,setTreatment }) => {
+const AppointmentOptions = ({ option, setTreatment }) => {
   const { name, slots } = option;
   return (
     <div className="text-center shadow-xl p-8  rounded-2xl">
@@ -14,9 +14,14 @@ const AppointmentOptions = ({ option,setTreatment }) => {
         {slots.length} {slots.length > 1 ? " spaces are" : "space is"} Available{" "}
       </h6>
 
-      
-<label onClick={()=> setTreatment(option)} htmlFor="booking-modal" className="btn btn-primary  mt-3 text-white ">Book Appointment </label>
-
+      <label
+      disabled={slots.length === 0}
+        onClick={() => setTreatment(option)}
+        htmlFor="booking-modal"
+        className="btn btn-primary  mt-3 text-white "
+      >
+        Book Appointment{" "}
+      </label>
     </div>
   );
 };
