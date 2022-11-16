@@ -1,29 +1,50 @@
-import React from "react";
+import React, { useContext } from "react";
 import { format } from "date-fns";
+import { AuthContext } from "../../../firebase/AuthProvider";
+import { toast } from "react-toastify";
 
-const BookingModal = ({ treatment, selected ,setTreatment}) => {
+const BookingModal = ({ treatment, selected, setTreatment }) => {
+  const { user } = useContext(AuthContext);
 
-  const date = format(selected, "PPpp")
+  const date = format(selected, "PP");
+
   const { name, slots } = treatment;
-  const addBooking = event =>{
-    event.preventDefault()
+  const addBooking = (event) => {
+    event.preventDefault();
     const form = event.target;
-    const name =form.name.value
-    const slot = form.slot.value
-    const phone = form.phone.value
-    const email = form.email.value
+    const patientName = form.name.value;
+    const slot = form.slot.value;
+    const phone = form.phone.value;
+    const email = form.email.value;
     // console.log(name,slot,phone,email);
     const booking = {
-      selected:date,
-      treatment:name,
-      patient:name,
+      appointmentDate: date,
+      treatment: name,
+      patient: patientName,
       slot,
       email,
-      phone
-    }
+      phone,
+    };
     console.log(booking);
-    setTreatment(null)
-  }
+
+    // for post booking data //
+
+    fetch(`http://localhost:3003/bookings`, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(booking),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.acknowledged) {
+          console.log(data);
+          setTreatment(null);
+          toast("Success Bookings");
+        }
+      });
+  };
 
   return (
     <div>
@@ -40,37 +61,46 @@ const BookingModal = ({ treatment, selected ,setTreatment}) => {
             ✕
           </label>
           <h3 className="text-lg font-bold">{treatment.name}</h3>
-          <form onSubmit={addBooking} action="" className="grid grid-cols-1 gap-5 mt-10">
+          <form
+            onSubmit={addBooking}
+            action=""
+            className="grid grid-cols-1 gap-5 mt-10"
+          >
             <input
               type="text "
               className="input w-full input-bordered "
               value={date}
               disabled
             />
-            <select name='slot' className="select select-bordered w-full ">
-              {slots.map((slot,i) => (
-                <option 
-                key={i}
-                value={slot}>{slot}</option>
+            <select name="slot" className="select select-bordered w-full ">
+              {slots.map((slot, i) => (
+                <option key={i} value={slot}>
+                  {slot}
+                </option>
               ))}
             </select>
             <input
-            name="name"
+              name="name"
               type="text "
               className="input w-full input-bordered "
               placeholder="Full Name"
+              defaultValue={user?.displayName}
+              disabled={user?.displayName ? true : false}
             />
-            <input
-            name="phone"
-              type="text "
-              className="input w-full input-bordered "
-              placeholder="Phone Number"
-            />
+
             <input
               type="email"
               name="email"
               className="input w-full input-bordered "
               placeholder="E-mail "
+              defaultValue={user?.email}
+              disabled={user?.email ? true : false}
+            />
+            <input
+              name="phone"
+              type="text "
+              className="input w-full input-bordered "
+              placeholder="Phone Number"
             />
             <br />
             <input

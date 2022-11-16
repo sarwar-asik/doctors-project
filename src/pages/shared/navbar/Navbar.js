@@ -21,7 +21,7 @@ const Navbar = () => {
       </li>
 
       {user?.uid ? (
-        <li onClick={logout} className="bg-red-500 text-white  mx-1 rounded-lg  ">
+        <li onClick={logout} className="hover:bg-red-500   mx-1 hover:text-white rounded-lg  ">
           {" "}
           <Link>Log Out</Link>{" "}
         </li>
@@ -33,8 +33,10 @@ const Navbar = () => {
       )}
 
       <li className="  mx-1 rounded-lg  ">
-        {" "}
-        <Link to="/">About </Link>{" "}
+        <Link to="/dashbord">Dashboard </Link>
+      </li>
+      <li className="  mx-1 rounded-lg  ">
+        <Link to="/">About </Link>
       </li>
       <li className="  mx-1 rounded-lg  ">
         {" "}

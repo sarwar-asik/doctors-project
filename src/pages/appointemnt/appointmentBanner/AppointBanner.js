@@ -21,7 +21,7 @@ const AppointBanner = ({selected,setSelected}) => {
               selected={selected}
               onSelect={setSelected}
             ></DayPicker>
-             <p className=' text-center '>You Selected  {format(selected, "PPpp")}</p>
+             <p className=' text-center '>You Selected  {format(selected, "PP")}</p>
           </div>
         </div>
       </div>

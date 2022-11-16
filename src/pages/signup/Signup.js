@@ -3,7 +3,7 @@ import React, { useContext } from "react";
 
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { AuthContext } from "../../firebase/AuthProvider";
 import app from "../../firebase/Firebase.config";
@@ -18,8 +18,12 @@ const Signup = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
+
+
   const [data, setData] = useState("");
   const [error, setError] = useState("");
+
+const navigate = useNavigate()
 
   const handleSignUp = (data) => {
     // console.log(data);
@@ -43,6 +47,7 @@ const Signup = () => {
           .then(() => {
             toast("Sign Up");
             setError("");
+            navigate('/')
           })
           .catch((er) => {
             setError(er.message);

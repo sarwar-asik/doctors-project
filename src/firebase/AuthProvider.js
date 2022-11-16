@@ -15,11 +15,15 @@ export const AuthContext = createContext();
 const AuthProvider = ({ children }) => {
   const auth = getAuth(app);
 
+  const  [loading,setLoading] = useState(true)
+
   const createUser = (email, password) => {
+    setLoading(true)
     return createUserWithEmailAndPassword(auth, email, password);
   };
 
   const login = (email, password) => {
+    setLoading(true)
     return signInWithEmailAndPassword(auth, email, password);
   };
 
@@ -27,6 +31,7 @@ const AuthProvider = ({ children }) => {
 
 const isOut = window.confirm('Log Out ?')
 if(isOut){
+    setLoading(true)
     return signOut(auth)
     .then(() => { toast('Log Out')})
     .catch((err) => console.log(err));
@@ -41,6 +46,7 @@ if(isOut){
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       console.log(currentUser);
       setUser(currentUser);
+      setLoading(false)
     });
 
     return () => {
@@ -64,7 +70,7 @@ return signInWithPopup(auth,provider)
 }
 
 
-  const authInfo = { name: "zinku", createUser, login, logout,user,googleSignIn };
+  const authInfo = {createUser, login, logout,user,googleSignIn,loading };
 
   return (
     <div>
