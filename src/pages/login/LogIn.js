@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { AuthContext } from "../../firebase/AuthProvider";
+import useToken from "../../token/useToken";
 
 const LogIn = () => {
   const { login,googleSignIn } = useContext(AuthContext);
@@ -14,14 +15,23 @@ const LogIn = () => {
     formState: { errors },
   } = useForm();
 
-  const [data, setData] = useState("");
 
-  const [error, setError] = useState("");
-
-const location = useLocation();
+  const location = useLocation();
 const navigate = useNavigate();
 
 const from = location.state?.from?.pathname || '/'
+  const [error, setError] = useState("");
+
+
+  
+const [loginUserEmail,setLogInUserEmail ]= useState('')
+const [token]=useToken(loginUserEmail)
+if(token){
+ return  navigate(from, {replace:true})
+
+}
+
+
   
   const handleLogIn = (data) => {
 
@@ -34,7 +44,8 @@ const from = location.state?.from?.pathname || '/'
       .then((result) => {
         toast("Log In Success");
         setError("");
-        navigate(from, {replace:true})
+        setLogInUserEmail(data.email)
+
 
       })
       .catch((error) => {

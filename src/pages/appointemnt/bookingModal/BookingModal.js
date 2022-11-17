@@ -3,7 +3,7 @@ import { format } from "date-fns";
 import { AuthContext } from "../../../firebase/AuthProvider";
 import { toast } from "react-toastify";
 
-const BookingModal = ({ treatment, selected, setTreatment }) => {
+const BookingModal = ({ treatment, selected, setTreatment ,refetch}) => {
   const { user } = useContext(AuthContext);
 
   const date = format(selected, "PP");
@@ -41,7 +41,11 @@ const BookingModal = ({ treatment, selected, setTreatment }) => {
         if (data.acknowledged) {
           console.log(data);
           setTreatment(null);
-          toast("Success Bookings");
+          toast.success("Success Bookings");
+          refetch()
+        }
+        else{
+          toast.error(data.message)
         }
       });
   };

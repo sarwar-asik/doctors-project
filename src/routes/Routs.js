@@ -1,7 +1,10 @@
 import { createBrowserRouter } from "react-router-dom";
+
+import DashboardLayout from "../layout/DashboardLayout";
 import Main from "../layout/Main";
 import Appointment from "../pages/appointemnt/Appointment/Appointment";
-import Dashbord from "../pages/dashboard/Dashbord";
+import TotalUser from "../pages/dashboard/alluse/TotalUser";
+import MyAppointment from "../pages/dashboard/MyAppointment";
 import Home from "../pages/home/Home";
 import LogIn from "../pages/login/LogIn";
 import Signup from "../pages/signup/Signup";
@@ -28,14 +31,21 @@ const router = createBrowserRouter([
         path: "/appointment",
         element: <Appointment />,
       },
+    ],
+  },
+
+  {
+    path: "/dashboard",
+    element: (
+      <PrivateRouter>
+        <DashboardLayout></DashboardLayout>
+      </PrivateRouter>
+    ),
+    children: [
+      { path: "/dashboard", element: <MyAppointment /> },
       {
-        path: "/dashbord",
-        element: (
-          <PrivateRouter>
-            <Dashbord />
-          </PrivateRouter>
-        ),
-      },
+        path:'/dashboard/totalUser',element:<TotalUser/>
+      }
     ],
   },
 ]);

@@ -15,28 +15,29 @@ export const AuthContext = createContext();
 const AuthProvider = ({ children }) => {
   const auth = getAuth(app);
 
-  const  [loading,setLoading] = useState(true)
+  const [loading, setLoading] = useState(true);
 
   const createUser = (email, password) => {
-    setLoading(true)
+    setLoading(true);
     return createUserWithEmailAndPassword(auth, email, password);
   };
 
   const login = (email, password) => {
-    setLoading(true)
+    setLoading(true);
     return signInWithEmailAndPassword(auth, email, password);
   };
 
   const logout = () => {
-
-const isOut = window.confirm('Log Out ?')
-if(isOut){
-    setLoading(true)
-    return signOut(auth)
-    .then(() => { toast('Log Out')})
-    .catch((err) => console.log(err));
-}
-  
+    const isOut = window.confirm("Log Out ?");
+    if (isOut) {
+      setLoading(true);
+      return signOut(auth)
+        .then(() => {
+          toast("Log Out");
+          localStorage.removeItem("accessToken");
+        })
+        .catch((err) => console.log(err));
+    }
   };
 
   // for currentUser //
@@ -46,7 +47,7 @@ if(isOut){
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       console.log(currentUser);
       setUser(currentUser);
-      setLoading(false)
+      setLoading(false);
     });
 
     return () => {
@@ -54,23 +55,19 @@ if(isOut){
     };
   }, []);
 
-// google sign in ///
-const provider = new GoogleAuthProvider()
+  // google sign in ///
+  const provider = new GoogleAuthProvider();
 
+  const googleSignIn = () => {
+    return signInWithPopup(auth, provider)
+      .then((result) => {
+        const user = result.user;
+        toast("Success Google ");
+      })
+      .catch((err) => console.log(err));
+  };
 
-const googleSignIn = ()=>{
-
-return signInWithPopup(auth,provider)
-.then(result=>{
-    const user = result.user
-    toast('Success Google ')
-})
-.catch(err=>console.log(err))
-
-}
-
-
-  const authInfo = {createUser, login, logout,user,googleSignIn,loading };
+  const authInfo = { createUser, login, logout, user, googleSignIn, loading };
 
   return (
     <div>

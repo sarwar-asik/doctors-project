@@ -7,6 +7,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { AuthContext } from "../../firebase/AuthProvider";
 import app from "../../firebase/Firebase.config";
+import useToken from "../../token/useToken";
 
 const Signup = () => {
   const { createUser, googleSignIn } = useContext(AuthContext);
@@ -24,6 +25,15 @@ const Signup = () => {
   const [error, setError] = useState("");
 
 const navigate = useNavigate()
+
+// for token //
+const [createdUserEmail,setCreatedUserEmail] =  useState('')
+
+const [token] = useToken(createdUserEmail)
+
+if(token){
+  navigate('/')
+}
 
   const handleSignUp = (data) => {
     // console.log(data);
@@ -47,7 +57,9 @@ const navigate = useNavigate()
           .then(() => {
             toast("Sign Up");
             setError("");
-            navigate('/')
+            // navigate('/')
+            saveUser(data.name,data.email)
+
           })
           .catch((er) => {
             setError(er.message);
@@ -58,6 +70,41 @@ const navigate = useNavigate()
         console.log(e);
       });
   };
+
+
+
+const saveUser =  (name,email )=>{
+
+  const user = {name, email}
+  fetch(`http://localhost:3003/users`,{
+    method:'POST',
+    headers:{
+      'content-type':'application/json'
+    },
+    body:JSON.stringify(user)
+  })
+  .then(res =>res.json())
+  .then(data =>{
+    console.log(data);
+    setCreatedUserEmail(email)
+  })
+}
+
+
+
+
+// const getUserToken =email=>{
+// fetch(`http://localhost:3003/jwt?email=${email}`)
+// .then(res=>res.json())
+// .then(data=>{
+//   if(data.accessToken){
+//     navigate('/')
+//     localStorage.setItem('accessToken',data.accessToken)
+//   }
+// })
+// }
+
+
   return (
     <div className="h-[800px] flex justify-center items-center">
       <div className="w-96 p-7">

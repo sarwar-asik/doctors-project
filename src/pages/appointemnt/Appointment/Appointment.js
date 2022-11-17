@@ -7,7 +7,7 @@ const Appointment = () => {
 
     return (
         <div>
-            <h2> Appointment </h2>
+            <h2 className='text-center text-3xl text-secondary font-medium mb-3 '> Appointment </h2>
             <AppointBanner 
             selected={selected}
             setSelected={setSelected}
