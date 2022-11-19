@@ -7,7 +7,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { AuthContext } from "../../firebase/AuthProvider";
 import app from "../../firebase/Firebase.config";
-import useToken from "../../token/useToken";
+import useToken from "../../hooks/token/useToken";
 
 const Signup = () => {
   const { createUser, googleSignIn } = useContext(AuthContext);
@@ -76,7 +76,7 @@ if(token){
 const saveUser =  (name,email )=>{
 
   const user = {name, email}
-  fetch(`http://localhost:3003/users`,{
+  fetch(`https://doctor-portal-server-chi.vercel.app/users`,{
     method:'POST',
     headers:{
       'content-type':'application/json'

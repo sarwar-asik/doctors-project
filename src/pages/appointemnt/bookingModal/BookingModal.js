@@ -29,7 +29,7 @@ const BookingModal = ({ treatment, selected, setTreatment ,refetch}) => {
 
     // for post booking data //
 
-    fetch(`http://localhost:3003/bookings`, {
+    fetch(`https://doctor-portal-server-chi.vercel.app/bookings`, {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -77,7 +77,7 @@ const BookingModal = ({ treatment, selected, setTreatment ,refetch}) => {
               disabled
             />
             <select name="slot" className="select select-bordered w-full ">
-              {slots.map((slot, i) => (
+              {slots?.map((slot, i) => (
                 <option key={i} value={slot}>
                   {slot}
                 </option>

@@ -19,19 +19,6 @@ const Navbar = () => {
         {" "}
         <Link to="/">Review</Link>{" "}
       </li>
-
-      {user?.uid ? (
-        <li onClick={logout} className="hover:bg-red-500   mx-1 hover:text-white rounded-lg  ">
-          {" "}
-          <Link>Log Out</Link>{" "}
-        </li>
-      ) : (
-        <li className="  mx-1 rounded-lg  ">
-          {" "}
-          <Link to="/login">Log In</Link>{" "}
-        </li>
-      )}
-
       <li className="  mx-1 rounded-lg  ">
         <Link to="/dashboard">Dashboard </Link>
       </li>
@@ -42,6 +29,27 @@ const Navbar = () => {
         {" "}
         <Link to="/">Contact Us </Link>{" "}
       </li>
+
+      {user?.uid ? (
+     <>
+        <li onClick={logout} className="hover:bg-red-500   mx-1 hover:text-white rounded-lg  ">
+          {" "}
+          <Link>Log Out</Link>{" "}
+        </li>
+        <li  className="rounded-lg  ">
+          {" "}
+          <Link to={'/profile'} className="mask mask-circle w-1/2 h-1/2"><img className="mask mask-circle"  src={user.photoURL
+} alt='user profile' /></Link>{" "}
+        </li>
+     </>
+      ) : (
+        <li className="  mx-1 rounded-lg  ">
+          {" "}
+          <Link to="/login">Log In</Link>{" "}
+        </li>
+      )}
+
+     
     </React.Fragment>
   );
   return (
